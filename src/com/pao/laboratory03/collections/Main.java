@@ -1,5 +1,7 @@
 package com.pao.laboratory03.collections;
 
+import java.util.*;
+
 /**
  * Exercițiul 1 — Colecții: HashMap și TreeMap
  *
@@ -51,6 +53,36 @@ package com.pao.laboratory03.collections;
 public class Main {
     public static void main(String[] args) {
         // TODO: implementează cele 3 părți de mai sus
+        // Hash part
+        String[] words = {"java", "python", "java", "c++", "python", "java", "rust", "c++", "go"};
+        Map<String, Integer> contorizareCuv= new HashMap<>();
+        for (String wd: words){
+            int frec=contorizareCuv.getOrDefault(wd,0);
+            frec++;
+            contorizareCuv.put(wd, frec);
+        }
+        System.out.println("Afisare MAP: "+contorizareCuv);
+        System.out.println("Există rust? " + contorizareCuv.containsKey("rust"));
+        System.out.println("Chei: " + contorizareCuv.keySet());
+        System.out.println("Valori: " + contorizareCuv.values());
+        System.out.println("EntrySet here:");
+        for (Map.Entry<String, Integer> entry : contorizareCuv.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
+        //treeMap
+        TreeMap<String, Integer> tree=new TreeMap<>(contorizareCuv);
+        System.out.println("Sortat: " + tree);
+        System.out.println("Prima cheie: " + tree.firstKey());
+        System.out.println("Ultima cheie: " + tree.lastKey());
+
+        //map cu obiecte
+        Map<String, List<String>> materii=new HashMap<>();
+        materii.put("PAOJ", new ArrayList<>(Arrays.asList("Ana", "Mihai", "Ion")));
+        materii.put("BD", new ArrayList<>(Arrays.asList("Ana", "Elena")));
+        materii.get("BD").add("George");
+        System.out.println("Studenti la PAOJ: "+materii.get("PAOJ"));
+        System.out.println("Studenti la BD (actualizat): "+materii.get("BD"));
     }
 }
 

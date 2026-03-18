@@ -32,7 +32,7 @@ package com.pao.laboratory03.enums;
  * 🔴 CRITICAL (level=4, color=red)
  *
  * === Switch pe prioritate ===
- * ⚠️ Atenție! Prioritate ridicată!
+ * "⚠️ Atenție! Prioritate ridicată!"
  *
  * === valueOf ===
  * Priority.valueOf("HIGH") = HIGH
@@ -51,6 +51,27 @@ public class Main {
     public static void main(String[] args) {
         // TODO: implementează pașii de mai sus
         // Hint: creează mai întâi fișierul Priority.java în acest pachet
+        for(Priority.Priorities p: Priority.Priorities.values()){
+            System.out.println(p.name()+" (level="+p.getLevel()+", color="+p.getColor()+")");
+        }
+        System.out.println("\nSwitch:");
+        switch (Priority.Priorities.HIGH) {
+            case LOW: System.out.println("⚠️ Atenție! Prioritate scazuta!"); break;
+            case MEDIUM: System.out.println("⚠️ Atenție! Prioritate medie!"); break;
+            case HIGH: System.out.println("⚠️ Atenție! Prioritate ridicată!"); break;
+            case CRITICAL: System.out.println("⚠️ Atenție! Prioritate CRITICA!"); break;
+        }
+
+        Priority.Priorities fromString = Priority.Priorities.valueOf("HIGH");
+        System.out.println("\nvalueOf(\"HIGH\") = " + fromString);
+
+        System.out.println("HIGH == HIGH? " + (fromString == Priority.Priorities.HIGH));
+        System.out.println("HIGH == LOW? " + (fromString == Priority.Priorities.LOW));
+
+        System.out.println("LOW: name="+ Priority.Priorities.LOW.name()+ ", ordinal="+Priority.Priorities.LOW.ordinal());
+        System.out.println("MEDIUM: name="+ Priority.Priorities.MEDIUM.name()+ ", ordinal="+Priority.Priorities.MEDIUM.ordinal());
+        System.out.println("HIGH: name="+ Priority.Priorities.HIGH.name()+ ", ordinal="+Priority.Priorities.HIGH.ordinal());
+        System.out.println("CRITICAL: name="+ Priority.Priorities.CRITICAL.name()+ ", ordinal="+Priority.Priorities.CRITICAL.ordinal());
     }
 }
 
