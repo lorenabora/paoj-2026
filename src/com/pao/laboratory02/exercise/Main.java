@@ -1,4 +1,4 @@
-package com.pao.laboratory01.exercise;
+package com.pao.laboratory02.exercise;
 
 import java.util.Scanner;
 
@@ -16,7 +16,7 @@ import java.util.Scanner;
  */
 public class Main {
     public static void main(String[] args) {
-        CarService carService = CarService.getInstance();
+        com.pao.laboratory02.exercise.CarService carService = com.pao.laboratory02.exercise.CarService.getInstance();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
