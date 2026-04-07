@@ -6,6 +6,25 @@ import com.pao.laboratory07.exercise1.exceptions.OrderIsAlreadyFinalException;
 
 import java.util.Scanner;
 
+//enum OrderState{
+//    PLACED, PROCESSED, SHIPPED, DELIVERED, CANCELED;
+//    public boolean isFinal(){
+//        return this == DELIVERED || this == CANCELED;
+//    }
+//    public OrderState next(){
+//        return switch(this){
+//            case PLACED -> PROCESSED;
+//            case PROCESSED -> SHIPPED;
+//            case SHIPPED -> DELIVERED;
+//            default -> null;
+//        };
+//    }
+//}
+
+enum OrderCommand {
+    next, cancel, undo, QUIT
+}
+
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
