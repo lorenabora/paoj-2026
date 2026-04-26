@@ -15,6 +15,6 @@
 1.2. Lista cu cel putin 8 tipuri de obiecte din domeniu (cabinet medical)
 - Clase: User(superclasa), Client, Medic, MedicSpecialist, Programare, Abonament, Analiza, Consultatie, CodProgramare
 - Enum: TipMedic
-- Servicii: ServiciuProgramari, ServiciuClienti, ServiciuMedici
+- Servicii: ServiciuProgramar, ServiciuClient, ServiciuMedic
 - Exceptii: DataIndisponibilaException, MedicIndisponibilException
 - Interfata: IPlata
