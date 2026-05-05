@@ -58,7 +58,7 @@ public class Main {
                     TreeMap<String, double[]> report = new TreeMap<>();
                     for (Tranzactie t : lista) {
                         String luna = t.getData().substring(0, 7);
-                        report.putIfAbsent(luna, new double[2]); // [0]=CREDIT, [1]=DEBIT
+                        report.putIfAbsent(luna, new double[2]); //0 CREDIT,1 DEBIT
                         if (t.getTip() == TipTranzactie.CREDIT) {
                             report.get(luna)[0] += t.getSuma();
                         } else {
