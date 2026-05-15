@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+//tf
 public class Main {
     private static final Set<String> HIGH_RISK_COUNTRIES =
             new HashSet<>(Arrays.asList("RU", "NG", "IR", "KP", "SY"));
