@@ -74,7 +74,7 @@ public class Main {
             System.out.println("Programarea "+p2.getCod()+" este "+p2.getStatus());
             serviciuProgramare.stergeProgramare(p2);
             //creare consultatie
-            Consultatie consultatie = serviciuProgramare.creeazaConsultatie(p1, "leziune severa la cartilajul genunchiului stang","infiltratii PRP, fizioterapie");
+            Consultatie consultatie = serviciuProgramare.creeazaConsultatie(1, p1, "leziune severa la cartilajul genunchiului stang","infiltratii PRP, fizioterapie");
             System.out.println("Consultatie creata: "+consultatie);
         }
         catch(DataIndisponibilaException | MedicIndisponibilException e){
@@ -291,6 +291,8 @@ public class Main {
 //            }
 //        } while (optiune != 0);
 
+
+        // ETAPA 2 Coming soon
 
     }
 }
