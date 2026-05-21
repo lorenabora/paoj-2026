@@ -17,7 +17,8 @@ public class ProgramareRepository implements Repository<Programare, String>
     public void save(Programare p)
     {
         String sql = "INSERT INTO cabinet_medical.programare(cod_p, client_id, medic_id, data_ora, pret_baza, status) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ps.setString(1, p.getCod().getVal());
             ps.setInt(2, p.getClient().getId());
             ps.setInt(3, p.getMedic().getId());
@@ -25,7 +26,8 @@ public class ProgramareRepository implements Repository<Programare, String>
             ps.setDouble(5, p.getPretBaza());
             ps.setString(6, p.getStatus());
             ps.executeUpdate();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             throw new RuntimeException("Eroare save programare: " + e.getMessage());
         }
@@ -35,14 +37,15 @@ public class ProgramareRepository implements Repository<Programare, String>
     public Optional<Programare> findById(String cod)
     {
         String sql = "SELECT * FROM cabinet_medical.programare WHERE cod_p = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ps.setString(1, cod);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapRow(rs));
-                }
+            try (ResultSet rs = ps.executeQuery())
+            {
+                if (rs.next()) { return Optional.of(mapRow(rs));}
             }
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             throw new RuntimeException("Eroare findById programare: " + e.getMessage());
         }
@@ -56,10 +59,9 @@ public class ProgramareRepository implements Repository<Programare, String>
         String sql = "SELECT * FROM cabinet_medical.programare";
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                lista.add(mapRow(rs));
-            }
-        } catch (SQLException e)
+            while (rs.next()) { lista.add(mapRow(rs));}
+        }
+        catch (SQLException e)
         {
             throw new RuntimeException("Eroare findAll programari: " + e.getMessage());
         }
@@ -70,7 +72,8 @@ public class ProgramareRepository implements Repository<Programare, String>
     public void update(Programare p)
     {
         String sql = "UPDATE cabinet_medical.programare SET client_id=?, medic_id=?, data_ora=?, pret_baza=?, status=? WHERE cod_p=?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ps.setInt(1, p.getClient().getId());
             ps.setInt(2, p.getMedic().getId());
             ps.setTimestamp(3, Timestamp.valueOf(p.getDataOra()));
@@ -78,7 +81,8 @@ public class ProgramareRepository implements Repository<Programare, String>
             ps.setString(5, p.getStatus());
             ps.setString(6, p.getCod().getVal());
             ps.executeUpdate();
-        } catch (SQLException e)
+        }
+        catch (SQLException e)
         {
             throw new RuntimeException("Eroare update programare: " + e.getMessage());
         }
@@ -88,10 +92,13 @@ public class ProgramareRepository implements Repository<Programare, String>
     public void delete(String cod)
     {
         String sql = "DELETE FROM cabinet_medical.programare WHERE cod_p=?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ps.setString(1, cod);
             ps.executeUpdate();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException("Eroare delete programare: " + e.getMessage());
         }
     }
@@ -135,19 +142,24 @@ public class ProgramareRepository implements Repository<Programare, String>
             while (rs.next()) {
                 rez.add(String.format("Medic: %s | Programari: %d", rs.getString("nume"), rs.getInt("nr_programari")));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException("Eroare JOIN programari per medic: " + e.getMessage());
         }
         return rez;
     }
 
     //jdbc
-    public void salveazaProgramareCuConsultatie(Programare programare, Consultatie consultatie) {
+    public void salveazaProgramareCuConsultatie(Programare programare, Consultatie consultatie)
+    {
         String sqlProgramare = "INSERT INTO cabinet_medical.programare(cod_p, client_id, medic_id, data_ora, pret_baza, status) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlConsultatie = "INSERT INTO cabinet_medical.consultatie(cod_p, diagnostic, recomandari, cost_final, data_consultatie) VALUES (?, ?, ?, ?, ?)";
-        try {
+        try
+        {
             connection.setAutoCommit(false);
-            try (PreparedStatement ps1 = connection.prepareStatement(sqlProgramare)) {
+            try (PreparedStatement ps1 = connection.prepareStatement(sqlProgramare))
+            {
                 ps1.setString(1, programare.getCod().getVal());
                 ps1.setInt(2, programare.getClient().getId());
                 ps1.setInt(3, programare.getMedic().getId());
@@ -156,7 +168,8 @@ public class ProgramareRepository implements Repository<Programare, String>
                 ps1.setString(6, programare.getStatus());
                 ps1.executeUpdate();
             }
-            try (PreparedStatement ps2 = connection.prepareStatement(sqlConsultatie)) {
+            try (PreparedStatement ps2 = connection.prepareStatement(sqlConsultatie))
+            {
                 ps2.setString(1, consultatie.getProgramare().getCod().getVal());
                 ps2.setString(2, consultatie.getDiagnostic());
                 ps2.setString(3, consultatie.getRecomandari());
@@ -166,24 +179,32 @@ public class ProgramareRepository implements Repository<Programare, String>
             }
             connection.commit();
             System.out.println("Tranzactie reusita: programare + consultatie salvate.");
-        } catch (SQLException e) {
-            try {
+        }
+        catch (SQLException e)
+        {
+            try
+            {
                 connection.rollback();
                 System.out.println("Tranzactie esuata, rollback efectuat.");
-            } catch (SQLException ex) {
+            }
+            catch (SQLException ex)
+            {
                 throw new RuntimeException("Eroare rollback: " + ex.getMessage());
             }
             throw new RuntimeException("Eroare tranzactie: " + e.getMessage());
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
+        }
+        finally
+        {
+            try { connection.setAutoCommit(true);}
+            catch (SQLException e)
+            {
                 throw new RuntimeException("Eroare reset autocommit: " + e.getMessage());
             }
         }
     }
 
-    private Programare mapRow(ResultSet rs) throws SQLException {
+    private Programare mapRow(ResultSet rs) throws SQLException
+    {
         Client clientMin = new Client(rs.getInt("id"), "", "", "");
         Medic medicMin = new Medic(rs.getInt("id"), "", "", "", null, new ArrayList<>());
         LocalDateTime dataOra = rs.getTimestamp("data_ora").toLocalDateTime();
