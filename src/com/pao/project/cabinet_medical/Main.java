@@ -3,6 +3,9 @@ package com.pao.project.cabinet_medical;
 import com.pao.project.cabinet_medical.model.*;
 import com.pao.project.cabinet_medical.exception.*;
 import com.pao.project.cabinet_medical.service.*;
+import com.pao.project.cabinet_medical.util.DatabaseConnection;
+
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -11,6 +14,9 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
+        //test temporal
+//        Connection conn = DatabaseConnection.getInstance().getConnection();
+//        System.out.println("Conexiune valida: " + (conn != null));
         ServiciuClient serviciuClient = ServiciuClient.getInstance();
         ServiciuMedic serviciuMedic = ServiciuMedic.getInstance();
         ServiciuProgramare serviciuProgramare = ServiciuProgramare.getInstance();

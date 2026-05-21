@@ -23,7 +23,11 @@ public class ServiciuMedic {
         if (m != null) {medici.add(m);}
     }
     public void sterge(Medic m){ medici.remove(m);}
-    public List<Medic> listeaza(){ return new ArrayList<>(medici);}
+    public List<Medic> listeaza()
+    {
+        ServiciuAudit.getInstance().logheaza("listare_medici");
+        return new ArrayList<>(medici);
+    }
     public List<Medic> filtreazaDupaTip(TipMedic tip) {
         List<Medic> rezultat = new ArrayList<>();
         for (Medic m : medici){
@@ -32,6 +36,7 @@ public class ServiciuMedic {
         return rezultat;
     }
     public void afiseazaOrarMedic(Medic medic) {
+        ServiciuAudit.getInstance().logheaza("afisare_orar_medic");
         System.out.println("Orar pentru medicul "+medic.getNume()+":");
         for (String interval : medic.getOrar()){
             System.out.println(" - " + interval);

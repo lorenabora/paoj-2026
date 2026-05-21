@@ -21,6 +21,7 @@ public class ServiciuProgramare {
     }
 
     public Programare creareProgramare(Client client, Medic medic, LocalDateTime dataOra, double pretBaza) throws DataIndisponibilaException, MedicIndisponibilException {
+        ServiciuAudit.getInstance().logheaza("creare_programare");
         verificareDisponibilitateMedic(medic, dataOra);
         CodProgramare cod = new CodProgramare(UUID.randomUUID().toString());
         Programare p = new Programare(client, medic, dataOra, pretBaza, cod);
@@ -30,6 +31,7 @@ public class ServiciuProgramare {
     }
 
     public void verificareDisponibilitateMedic(Medic medic, LocalDateTime dataOra) throws DataIndisponibilaException, MedicIndisponibilException {
+        ServiciuAudit.getInstance().logheaza("verificare_disponibilitate_medic");
         for (Programare pr : programari) {
             if (pr.getMedic().equals(medic) && pr.getDataOra().equals(dataOra) && !"ANULATA".equals(pr.getStatus())) {
                 throw new DataIndisponibilaException("Medicul are deja o programare la această dată.");
@@ -42,11 +44,13 @@ public class ServiciuProgramare {
 
     // istoric client sortat cresc
     public List<Programare> afisareIstoricProgramari(Client client) {
+        ServiciuAudit.getInstance().logheaza("afisare_istoric_programari");
         List<Programare> lista = new ArrayList<>(client.getIstoricProgramari());
         Collections.sort(lista);
         return lista;
     }
     public void anulareProgramare(Programare p) {
+        ServiciuAudit.getInstance().logheaza("anulare_programare");
         if (p != null) {
             p.setStatus("ANULATA");
             programari.remove(p);
@@ -54,23 +58,26 @@ public class ServiciuProgramare {
     }
     public void reprogramare(Programare p, LocalDateTime nouaDataOra) throws DataIndisponibilaException, MedicIndisponibilException {
         if (p == null) return;
+        ServiciuAudit.getInstance().logheaza("reprogramare");
         verificareDisponibilitateMedic(p.getMedic(), nouaDataOra);
         p.setDataOra(nouaDataOra);
     }
     public double calculareDetaliiPlata(Programare p) {
+        ServiciuAudit.getInstance().logheaza("calculare_detalii_plata");
         Client c = p.getClient();
         if (c.getAbonament() != null) {
             return c.getAbonament().calculeazaPretFinal(p.getPretBaza());
         }
         return p.getPretBaza();
     }
-    public Consultatie creeazaConsultatie(Programare p, String diagnostic, String recomandari) {
+    public Consultatie creeazaConsultatie(int id,Programare p, String diagnostic, String recomandari) {
         double costFinal = calculareDetaliiPlata(p);
-        Consultatie c = new Consultatie(p, diagnostic, recomandari, costFinal, LocalDateTime.now());
+        Consultatie c = new Consultatie(id, p, diagnostic, recomandari, costFinal, LocalDateTime.now());
         consultatii.add(c);
         return c;
     }
     public void afisareRezultateAnalize(Client client) {
+        ServiciuAudit.getInstance().logheaza("afisare_rezultate_analize");
         System.out.println("Rezultate analize pentru " + client.getNume() + ":");
         for (Analiza a : client.getAnalize()) {
             System.out.println(a);
@@ -79,6 +86,7 @@ public class ServiciuProgramare {
 
     //exportare istoric medical (simulare)
     public void exportareIstoricMedical(Client client) {
+        ServiciuAudit.getInstance().logheaza("exportare_istoric_medical");
         System.out.println("Export istoric medical pentru " + client.getNume() + "...");
         for (Programare p : client.getIstoricProgramari()) {
             System.out.println(p);
@@ -90,6 +98,7 @@ public class ServiciuProgramare {
     }
 
     public void afisareContClient(Client client) {
+        ServiciuAudit.getInstance().logheaza("afisare_cont_client");
         System.out.println("Cont client");
         System.out.println(client);
         System.out.println("Istoric programări:");
@@ -103,6 +112,7 @@ public class ServiciuProgramare {
     }
 
     public void calculareOferte(Client client) {
+        ServiciuAudit.getInstance().logheaza("calculare_oferte");
         System.out.println("Oferte pentru clientul " + client.getNume() + ":");
         if (client.getAbonament() != null) {
             System.out.println(" - Abonament " + client.getAbonament().getTip() +
