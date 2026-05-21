@@ -2,6 +2,10 @@ package com.pao.project.cabinet_medical;
 
 import com.pao.project.cabinet_medical.model.*;
 import com.pao.project.cabinet_medical.exception.*;
+import com.pao.project.cabinet_medical.repository.ClientRepository;
+import com.pao.project.cabinet_medical.repository.ConsultatieRepository;
+import com.pao.project.cabinet_medical.repository.MedicRepository;
+import com.pao.project.cabinet_medical.repository.ProgramareRepository;
 import com.pao.project.cabinet_medical.service.*;
 import com.pao.project.cabinet_medical.util.DatabaseConnection;
 
@@ -17,6 +21,7 @@ public class Main {
         //test temporal
 //        Connection conn = DatabaseConnection.getInstance().getConnection();
 //        System.out.println("Conexiune valida: " + (conn != null));
+        System.out.println(System.getProperty("user.dir"));
         ServiciuClient serviciuClient = ServiciuClient.getInstance();
         ServiciuMedic serviciuMedic = ServiciuMedic.getInstance();
         ServiciuProgramare serviciuProgramare = ServiciuProgramare.getInstance();
@@ -76,6 +81,65 @@ public class Main {
             //creare consultatie
             Consultatie consultatie = serviciuProgramare.creeazaConsultatie(1, p1, "leziune severa la cartilajul genunchiului stang","infiltratii PRP, fizioterapie");
             System.out.println("Consultatie creata: "+consultatie);
+
+
+            //-----------------------------------------------------------------
+            // ETAPA 2 Coming soon
+            System.out.println("Etapa II here we go again");
+            ClientRepository clientRepository = new ClientRepository();
+            MedicRepository medicRepository = new MedicRepository();
+            ProgramareRepository programareRepository = new ProgramareRepository();
+            ConsultatieRepository consultatieRepository = new ConsultatieRepository();
+
+            System.out.println("Salvari clienti");
+            clientRepository.save(c1);
+            clientRepository.save(c2);
+
+            System.out.println("Salvari medici");
+            medicRepository.save(m1);
+            medicRepository.save(ms);
+
+            System.out.println("Toti clientii");
+            for (Client c : clientRepository.findAll()) { System.out.println(c);}
+            System.out.println("Toti medicii");
+            for (Medic m : medicRepository.findAll()) { System.out.println(m);}
+
+            System.out.println("Cauta client id=1");
+            clientRepository.findById(1).ifPresent(System.out::println);
+
+            System.out.println("Update client Bora");
+            c1.setEmail("bora_updated@gmail.com");
+            clientRepository.update(c1);
+            clientRepository.findById(1).ifPresent(System.out::println);
+
+            System.out.println("Tranzactie: save programare + consultatie");
+            try
+            {
+                programareRepository.save(p1);
+                Consultatie consultatieTranzactie = new Consultatie(0, p1, "Diagnostic test tranzactie", "Recomandari test", 250.0, LocalDateTime.now());
+                programareRepository.salveazaProgramareCuConsultatie(p1, consultatieTranzactie);
+                System.out.println("Succes la tranzactie.");
+            }
+            catch (Exception e)
+            {
+                System.out.println("Eroare tranzactie: " + e.getMessage());
+            }
+
+            System.out.println("Programari active cu client si medic");
+            for (String linie : programareRepository.findProgramariActive()) { System.out.println(linie);}
+
+            System.out.println("Numar programari/medic");
+            for (String linie : programareRepository.findNrProgramariMedic()) { System.out.println(linie);}
+
+            System.out.println("Consultatiile clientului cu id=1");
+            for (String linie : consultatieRepository.findConsultatiiPerClient(1)) {
+                System.out.println(linie);
+            }
+
+            System.out.println("\n-- Delete client cu id=2 --");
+            clientRepository.delete(2);
+            System.out.println("Clienti ramasi in DB:");
+            for (Client c : clientRepository.findAll()) { System.out.println(c);}
         }
         catch(DataIndisponibilaException | MedicIndisponibilException e){
             System.out.println("Eroare: "+e.getMessage());
@@ -290,9 +354,5 @@ public class Main {
 //                    System.out.println("Optiune invalida.");
 //            }
 //        } while (optiune != 0);
-
-
-        // ETAPA 2 Coming soon
-
     }
 }

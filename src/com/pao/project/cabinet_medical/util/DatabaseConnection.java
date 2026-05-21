@@ -1,5 +1,6 @@
 package com.pao.project.cabinet_medical.util;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +14,8 @@ public class DatabaseConnection {
     private DatabaseConnection(){
         try{
             Properties props = new Properties();
-            InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties");
+            //InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties");
+            InputStream input = new FileInputStream("resources/db.properties");
             props.load(input);
             String url = props.getProperty("db.url");
             String user = props.getProperty("db.user");
